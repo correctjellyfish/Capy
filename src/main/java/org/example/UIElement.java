@@ -34,5 +34,18 @@ public interface UIElement {
      * Get the currently focused TextElement
      * @return Currently focused TextElement
      */
-    TextElement getTextElement();
+    Buffer getBuffer();
+
+    /**
+     * Get the current position of the TextCursor
+     */
+    TextPosition getTextCursor();
+
+    /**
+     * Get the current *absolute* position of the Screen Cursor
+     * @return
+     */
+    ScreenPosition getScreenCursor();
+
+
 }
