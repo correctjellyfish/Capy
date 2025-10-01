@@ -1,8 +1,6 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * A class for holding and manipulating text data
@@ -11,7 +9,7 @@ public class Buffer {
     /**
      * The text that the buffer holds
      */
-    private ArrayList<ArrayList<char>> text;
+    private ArrayList<ArrayList<Character>> text;
 
     /**
      * Insert a character at a specified position
@@ -24,12 +22,19 @@ public class Buffer {
         this.text.get(row).add(position, toInsert);
     }
 
+    /**
+     * Delete character at provided position
+     * @param row Row of character to delete
+     * @param position Position within row of character to delete
+     */
+    public void deleteChar(int row, int position){}
+
 
     /**
      * Get the number of rows in the buffer
      * @return Number of rows within buffer
      */
     public int getNumRows(){
-        this.text.size();
+        return this.text.size();
     }
 }
