@@ -7,19 +7,32 @@ public interface UIElement {
     /**
      * Draw the element to the Terminal
      */
-    public void draw();
-    /** Change the size of the UIElement
+    void draw();
+    /**
+     * Change the size of the UIElement
      *
      * @param   newRows The number of rows the element will occupy following the resize
      * @param   newCols The number of rows the element will occupy following the resize
      */
-    public void resize(int newRows, int newCols);
+    void resize(int newRows, int newCols);
 
-    /** Set the position of the UI element
+    /**
+     * Set the position of the UI element
      *
      * @param rowPos New row offset of the element
      * @param colPos New column offset of the element
      */
-    public void setPosition(int rowPos, int colPos);
+    void setPosition(int rowPos, int colPos);
 
+    /**
+     * Determine if a redraw is necessary
+     * @return True if a redraw is required
+     */
+    boolean needsRedraw();
+
+    /**
+     * Get the currently focused TextElement
+     * @return Currently focused TextElement
+     */
+    TextElement getTextElement();
 }
