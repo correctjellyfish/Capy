@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.example.capy"},{"l":"org.example.capy.buffer"},{"l":"org.example.capy.commands"},{"l":"org.example.capy.modes"},{"l":"org.example.capy.ui"}];updateSearchResults();
