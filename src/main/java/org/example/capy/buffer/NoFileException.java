@@ -1,4 +1,4 @@
-package org.example.buffer;
+package org.example.capy.buffer;
 
 /**
  * Thrown when Buffer tries to write to non-existant file
