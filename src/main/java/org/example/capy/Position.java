@@ -1,4 +1,4 @@
-package org.example;
+package org.example.capy;
 
 /**
  * A position (on the screen or in a buffer)

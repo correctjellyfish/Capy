@@ -1,6 +1,6 @@
-package org.example.ui;
+package org.example.capy.ui;
 
-import org.example.Position;
+import org.example.capy.Position;
 
 /**
  * A UI element of the Editor (e.g. a text field, or line number)

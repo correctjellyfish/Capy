@@ -1,4 +1,4 @@
-package org.example;
+package org.example.capy;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.screen.*;
@@ -6,8 +6,8 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 
 import java.io.IOException;
 
-import org.example.ui.*;
-import org.example.modes.*;
+import org.example.capy.ui.*;
+import org.example.capy.modes.*;
 
 /**
  * The main class implementing the editor

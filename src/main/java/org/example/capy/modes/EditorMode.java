@@ -1,4 +1,4 @@
-package org.example.modes;
+package org.example.capy.modes;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package org.example.commands;
+package org.example.capy.commands;
 
 /**
  * Interface for objects which can accept a command

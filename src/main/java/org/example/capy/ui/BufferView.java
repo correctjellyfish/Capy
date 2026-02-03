@@ -1,4 +1,4 @@
-package org.example.ui;
+package org.example.capy.ui;
 
 /**
  * A class for displaying a Buffer
