@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <groupId>org.example</groupId>
+  <artifactId>Capy</artifactId>
+  <version>1.0-SNAPSHOT</version>
   <dependencies>
     <dependency>
-      <groupId>com.googlecode.lanterna</groupId>
+      <groupId>com.googlecode.lanterna</groupId> <!-- Using for interfacing with the terminal -->
       <artifactId>lanterna</artifactId>
       <version>3.1.2</version>
     </dependency>
   </dependencies>
-  <groupId>org.example</groupId>
-  <artifactId>Capy</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <build>
     <plugins>
       <plugin>
@@ -19,6 +19,7 @@
         <version>3.12.1</version>
         <configuration>
           <fork>true</fork>
+	  <release>25</release>
         </configuration>
       </plugin>
       <plugin>
