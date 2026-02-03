@@ -1,5 +1,7 @@
 package org.example.ui;
 
+import org.example.Position;
+
 /**
  * A UI element of the Editor (e.g. a text field, or line number)
  */
@@ -22,10 +24,9 @@ public interface UIElement {
     /**
      * Set the position of the UI element
      *
-     * @param rowPos New row offset of the element
-     * @param colPos New column offset of the element
+     * @param position New position to move element to
      */
-    void setPosition(int rowPos, int colPos);
+    void setPosition(Position position);
 
     /**
      * Determine if a redraw is necessary

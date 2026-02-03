@@ -6,6 +6,9 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 
 import java.io.IOException;
 
+import org.example.ui.*;
+import org.example.modes.*;
+
 /**
  * The main class implementing the editor
  */
@@ -14,11 +17,6 @@ public class Editor {
      * The root of the Editors UI
      */
     UIElement uiRoot;
-
-    /**
-     * User input handler
-     */
-    InputHandler inputHandler;
 
     /**
      * The current mode of the editor
@@ -39,7 +37,6 @@ public class Editor {
      * Whether the editor should exit
      */
     boolean shouldExit;
-
 
     /**
      * Default Editor Constructor, sets up the Terminal
@@ -67,8 +64,6 @@ public class Editor {
                 // Draw the UI
                 this.uiRoot.draw();
             }
-            // Handle any user input
-            this.inputHandler.handleInput().exec();
 
         }
 
@@ -78,6 +73,5 @@ public class Editor {
         // Stop the buffered screen (exit raw mode and alternate terminal)
         this.screen.stopScreen();
     }
-
 
 }
