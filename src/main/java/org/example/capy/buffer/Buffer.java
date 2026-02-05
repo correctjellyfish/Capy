@@ -11,16 +11,25 @@ import java.util.ArrayList;
 import java.util.logging.*;
 import java.util.Optional;
 
+import org.example.capy.events.Reporter;
+import org.example.capy.events.Watcher;
+import org.example.capy.events.Event;
+
 /**
  * A class for holding and manipulating text data
  */
-public class Buffer {
+public class Buffer implements Reporter {
   private static Logger logger = Logger.getLogger(Buffer.class.getName());
 
   /**
    * The text that the buffer holds
    */
   private ArrayList<StringBuffer> text;
+
+  /**
+   * Array of watchers to alert on change
+   */
+  private ArrayList<Watcher> watchers;
 
   /**
    * Represents the path to the file the buffer was read from/will be saved to
@@ -97,6 +106,17 @@ public class Buffer {
     }
     this.text.get(row).insert(position, toInsert);
     this.lastUpdated = Instant.now();
+    this.sendAlert(Event.CHANGED);
+  }
+
+  /**
+   * Get a line from the buffer
+   *
+   * @param lineNum Line to get from the buffer
+   * @return StringBuffer representing the line
+   */
+  public StringBuffer getLine(int lineNum) {
+    return this.text.get(lineNum);
   }
 
   /**
@@ -112,6 +132,7 @@ public class Buffer {
     this.text.add(row + 1, newLine);
     oldRow.delete(position, oldRow.length());
     this.lastUpdated = Instant.now();
+    this.sendAlert(Event.CHANGED);
   }
 
   /**
@@ -127,6 +148,7 @@ public class Buffer {
     joinedLine.append(this.text.get(row));
     this.text.remove(row);
     this.lastUpdated = Instant.now();
+    this.sendAlert(Event.CHANGED);
   }
 
   /**
@@ -138,6 +160,7 @@ public class Buffer {
   public void deleteChar(int row, int position) {
     this.text.get(row).deleteCharAt(position);
     this.lastUpdated = Instant.now();
+    this.sendAlert(Event.CHANGED);
   }
 
   /**
@@ -148,4 +171,18 @@ public class Buffer {
   public int getNumRows() {
     return this.text.size();
   }
+
+  // region: Reporter Interface
+  public void addWatcher(Watcher watcher) {
+    this.watchers.add(watcher);
+  }
+
+  public void sendAlert(Event event) {
+    for (Watcher watcher : this.watchers) {
+      watcher.receiveAlert(this, event);
+    }
+  }
+
+  // endregion: Reporter Interface
+
 }

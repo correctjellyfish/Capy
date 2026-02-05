@@ -1,4 +1,3 @@
 [tools]
 graalvm = "latest"
-#java = "openjdk"
 maven = "latest"

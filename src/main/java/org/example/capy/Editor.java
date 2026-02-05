@@ -58,17 +58,17 @@ public class Editor {
             this.terminalSize = this.screen.doResizeIfNecessary();
             // Adjust the UI elements to the new size
             this.uiRoot.resize(this.terminalSize.getRows(), this.terminalSize.getColumns());
-            // Clear the screen and redraw if necessary
-            if (this.uiRoot.needsRedraw()) {
-                this.screen.clear();
-                // Draw the UI
-                this.uiRoot.draw();
-            }
-
+            // Clear the screen and redraw
+            this.screen.clear();
+            // Draw the UI
+            this.uiRoot.draw(this.screen);
         }
 
     }
 
+    /**
+     * Exit the editor (cleaning up the terminal)
+     */
     void exit() throws IOException {
         // Stop the buffered screen (exit raw mode and alternate terminal)
         this.screen.stopScreen();
