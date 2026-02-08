@@ -33,22 +33,22 @@ public class BufferView extends UIElement implements Watcher {
    */
   private int tabSize;
 
-  private TextColor foreground;
-  private TextColor background;
-
   /**
    * Whether the buffer needs to be redrawn
    */
   private boolean needsRedraw;
 
   public BufferView(Buffer buffer, Position position, int rows, int cols) {
+    // Sets up the UIElement
     super(position, rows, cols);
-    this.buffer = buffer;
+    // Basic setup
     this.needsRedraw = false;
     this.cursor = new Position(0, 0);
     this.bufferOffset = new Position(0, 0);
-    this.foreground = TextColor.Indexed.fromRGB(205, 214, 244);
-    this.background = TextColor.Indexed.fromRGB(30, 30, 46);
+    // Set which buffer the BufferView points
+    this.buffer = buffer;
+    // Add this as a watcher of the buffer
+    this.buffer.addWatcher(this);
   }
 
   /**
@@ -58,7 +58,7 @@ public class BufferView extends UIElement implements Watcher {
     if (!this.needsRedraw) {
       return;
     }
-    for (int i = 0; i < this.numRows; i++) {
+    for (int i = this.bufferOffset.row; i - this.bufferOffset.row < this.numRows; i++) {
       drawLine(screen, i);
     }
     this.needsRedraw = false;
@@ -68,44 +68,60 @@ public class BufferView extends UIElement implements Watcher {
    * Draw a single line to the terminal
    *
    * @param screen  The terminal to draw to
-   * @param lineNum The relative line number to draw (so 0 represents the line at
-   *                the offset position)
+   * @param lineNum The line number to draw
    */
   private void drawLine(Screen screen, int lineNum) {
-    Position screenOffset = this.cursor.subtract(this.bufferOffset).add(this.position);
-    StringBuffer line = this.buffer.getLine(this.bufferOffset.row + lineNum);
-    int screenRow = screenOffset.row + lineNum;
-    int lineCol = this.bufferOffset.col;
-    char curChar;
+    StringBuffer line = this.buffer.getLine(lineNum);
+    int cursorColumn = this.bufferOffset.col;
+    char currentChar;
 
-    while (lineCol - bufferOffset.col < this.numCols) {
-      curChar = line.charAt(lineCol);
-      if (curChar != '\t') {
-        screen.setCharacter(screenOffset.col + (lineCol - bufferOffset.col), screenRow,
-            TextCharacter.fromCharacter(curChar, this.foreground, this.background)[0]);
-        lineCol++;
+    while (getElementColFromBufferCol(cursorColumn) < this.numCols) {
+      currentChar = line.charAt(cursorColumn);
+      if (currentChar != '\t') {
+        this.drawCharacterRelative(screen, currentChar,
+            getElementPositionFromBufferPosition(new Position(lineNum, cursorColumn)));
         continue;
       }
-      // Insert spaces for a tab (ensuring it doesn't run over)
-      int numSpaces = Math.min(this.tabSize, this.numCols - (lineCol - bufferOffset.col));
-      // Check if the tab will go to the end of the line
-      if ((lineCol - bufferOffset.col) + numSpaces - 1 > this.numCols) {
-        numSpaces = this.numCols - ((lineCol - bufferOffset.col) + numSpaces - 1);
-      }
+      int numSpaces = Math.min(Configuration.getConfig().tabSize,
+          this.numCols - (cursorColumn - this.bufferOffset.col));
       for (int i = 0; i < numSpaces; i++) {
-        screen.setCharacter(screenOffset.col + (lineCol - bufferOffset.col) + i, screenRow,
-            TextCharacter.fromCharacter(' ', this.foreground, this.background)[0]);
+        this.drawCharacterRelative(screen, currentChar,
+            getElementPositionFromBufferPosition(new Position(lineNum, cursorColumn)));
       }
-      lineCol += numSpaces;
+      cursorColumn += numSpaces;
     }
+  }
+
+  /**
+   * Get the position of the cursor with the BufferView for
+   * a position within the buffer.
+   *
+   * @param bufferPosition Position of the cursor within the buffer
+   * @return The position of the cursor using relative Element coordinates
+   */
+  private Position getElementPositionFromBufferPosition(Position bufferPosition) {
+    return bufferPosition.subtract(this.bufferOffset);
+  }
+
+  private int getElementColFromBufferCol(int bufferColumn) {
+    return bufferColumn - this.bufferOffset.col;
+  }
+
+  private int getElementRowFromBufferRow(int bufferRow) {
+    return bufferRow - this.bufferOffset.row;
   }
 
   @Override
   public Position getCursorPosition() {
-    return this.cursor.subtract(this.bufferOffset);
+    return getAbsolutePositionFromElementPosition(getElementPositionFromBufferPosition(this.cursor));
   }
 
   // region: Watcher interface
+  /**
+   * Receive alert from the underlying buffer.
+   *
+   * Used to track whether the BufferView needs a new redraw.
+   */
   public void receiveAlert(Reporter reporter, Event event) {
     switch (event) {
       case CHANGED:
